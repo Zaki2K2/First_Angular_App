@@ -1,0 +1,23 @@
+<section id="tasks">
+<header>
+
+  <!-- {{}}} => string interpolation feature -->
+  <h2>{{ name }}'s Tasks </h2>
+<menu>
+  <button>Add Task</button>
+</menu>
+
+</header>
+
+<ul>
+  @for (task of selectedUserTasks; track task.id) {
+
+    <li>
+      <app-task [task]="task" (complete)="onCompleteTask($event)"/>
+    </li>
+  }
+
+</ul>
+
+
+</section>

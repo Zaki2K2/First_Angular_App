@@ -1,21 +1,45 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<!--  -->
 <link rel="stylesheet" href="app.component.css">
-<app-header/>
+
+<app-header></app-header>
+
 <main>
   <ul id="users">
-    <li>
 
-      <app-user/>
+    <!-- Angular want to keep track of Every Item in the list -->
+     <!-- It tells Angular which unique item is currently selected  -->
 
-    </li>
-  </ul>
+<!--
+trackBy is used to improve performance by helping Angular identify list items by a unique key (like id),
+ so it only updates changed items instead of re-rendering the entire list. -->
+
+    @for (user of users; track user.id) {
+      <li>
+        <app-user [user]="user" [selected]="user.id === selectedUserId" (select)="onSelectUser($event)"></app-user>
+      </li>
+    }
+   </ul>
+
+   @if(selectedUser) {
+    <app-tasks [userId]="selectedUser.id" [name]="selectedUser.name"></app-tasks>
+  } @else {
+    <p id="fallback">Select a User to see their Tasks!</p>
+  }
 </main>
+  <!-- @for (user of users; track user.id) {
+
+
+  <li *ngfor="let user of users">
+    <app-user [user]="user"  (select)="onSelectUser($event)"></app-user>
+  </li>
+ }
+</ul>
+
+ @if(selectedUser) {
+
+ <app-tasks *ngIf="selectedUser; else fallback"  [name]="selectedUser!.name"/>
+ } @else {
+  <ng-template #fallback>
+    <p id="fallback"> Select a User to see their Tasks!</p>
+  </ng-template>
+}
+</main -->
