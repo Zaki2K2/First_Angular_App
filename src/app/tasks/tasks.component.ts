@@ -1,17 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
+import { NewTaskComponent } from './new-task/new-task.component';
+import { type NewTaskData } from './task/task.model';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [TaskComponent],
+  imports: [TaskComponent, NewTaskComponent],
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent {
   @Input() userId?: string;
   @Input() name?: string;
-
+  isAddingTask = false;
   tasks = [
     {
       id: 't1',
@@ -42,5 +44,25 @@ export class TasksComponent {
 
   onCompleteTask(id: string) {
     this.tasks = this.tasks.filter((task) => task.id!== id);
+  }
+  onStartAddTask(){
+ this.isAddingTask = true;
+  }
+
+  onCancelAddTask(){
+    this.isAddingTask = false;
+  }
+  onAddTask(taskData: NewTaskData) {
+    this.tasks.unshift({
+      // id: Math.random().toString(36).substr(2, 9),
+      id: new Date().getTime().toString(),
+      userId: this.userId!,
+      title: taskData.title,
+      summary: taskData.summary,
+      dueDate: taskData.date,
+    });
+    this.isAddingTask = false;
+    // Reset the form
+    // this.newTaskForm.reset();  // Uncomment this line if you're using Reactive Forms
   }
 }
